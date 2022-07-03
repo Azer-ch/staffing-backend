@@ -1,14 +1,29 @@
 package com.staffing.role.enums;
 
 public enum RoleEnum {
-    ADMIN {
+    ROLE_ADMIN {
         public String toString() {
-            return "ADMIN";
+            return "ROLE_ADMIN";
         }
     },
-    USER {
+    ROLE_USER {
         public String toString() {
-            return "USER";
+            return "ROLE_USER";
         }
-    }
+    },
+    ROLE_ENTERPRISE{
+        public String toString() {
+            return "ROLE_ENTERPRISE";
+        }
+    },
+    ROLE_RH{
+        public String toString() {
+            return "ROLE_RH";
+        }
+    },
+    ROLE_ENGINEER{
+        public String toString() {
+            return "ROLE_ENGINEER";
+        }
+    },
 }
