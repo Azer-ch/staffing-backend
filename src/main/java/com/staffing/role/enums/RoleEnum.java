@@ -16,9 +16,9 @@ public enum RoleEnum {
             return "ROLE_ENTERPRISE";
         }
     },
-    ROLE_RH{
+    ROLE_HUMAN_RESOURCE{
         public String toString() {
-            return "ROLE_RH";
+            return "ROLE_HUMAN_RESOURCE";
         }
     },
     ROLE_ENGINEER{

@@ -5,6 +5,9 @@ import com.staffing.employee.entity.Employee;
 import com.staffing.employee.service.EmployeeService;
 import com.staffing.enterprise.entity.Enterprise;
 import com.staffing.enterprise.repository.EnterpriseRepository;
+import com.staffing.exceptions.EmailAlreadyExistsException;
+import com.staffing.exceptions.NameAlreadyExistsException;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +31,8 @@ public class EmployeeController {
         Employee employee = new Employee(addEmployeeRequest.getEmail(),addEmployeeRequest.getPassword());
         try{
             return ResponseEntity.ok(employeeService.addEmployee(employee, addEmployeeRequest.getRole(),enterprise));
-        }catch (Exception NameAlreadyExistsException) {
-            return ResponseEntity.badRequest().body(NameAlreadyExistsException.getMessage());
+        }catch (EmailAlreadyExistsException | NotFoundException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 }

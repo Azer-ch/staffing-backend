@@ -6,6 +6,7 @@ import com.staffing.role.enums.RoleEnum;
 import com.staffing.role.repository.RoleRepository;
 import com.staffing.user.entity.User;
 import com.staffing.user.repository.UserRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,11 @@ public class UserService {
         admin.addRole(role);
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         return userRepository.save(admin);
+    }
+    public User FindUserByEmail(String email) throws NotFoundException {
+        if(userRepository.existsUserByEmail(email)) {
+            return userRepository.findUserByEmail(email);
+        }
+        throw new NotFoundException("User not found");
     }
 }
