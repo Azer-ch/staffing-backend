@@ -1,4 +1,4 @@
-package com.staffing.role.enums;
+package com.staffing.enums;
 
 public enum RoleEnum {
     ROLE_ADMIN {
@@ -16,9 +16,9 @@ public enum RoleEnum {
             return "ROLE_ENTERPRISE";
         }
     },
-    ROLE_HUMAN_RESOURCE{
+    ROLE_HR{
         public String toString() {
-            return "ROLE_HUMAN_RESOURCE";
+            return "ROLE_HR";
         }
     },
     ROLE_ENGINEER{
@@ -26,4 +26,9 @@ public enum RoleEnum {
             return "ROLE_ENGINEER";
         }
     },
+    ROLE_MANAGER{
+        public String toString() {
+            return "ROLE_MANAGER";
+        }
+    }
 }

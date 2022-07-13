@@ -2,7 +2,7 @@ package com.staffing.user.service;
 
 import com.staffing.exceptions.EmailAlreadyExistsException;
 import com.staffing.role.entity.Role;
-import com.staffing.role.enums.RoleEnum;
+import com.staffing.enums.RoleEnum;
 import com.staffing.role.repository.RoleRepository;
 import com.staffing.user.entity.User;
 import com.staffing.user.repository.UserRepository;

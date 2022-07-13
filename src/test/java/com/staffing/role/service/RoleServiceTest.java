@@ -2,7 +2,7 @@ package com.staffing.role.service;
 
 import com.staffing.exceptions.RoleAlreadyExistsException;
 import com.staffing.role.entity.Role;
-import com.staffing.role.enums.RoleEnum;
+import com.staffing.enums.RoleEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

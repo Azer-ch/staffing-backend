@@ -2,9 +2,8 @@ package com.staffing.role.service;
 
 import com.staffing.exceptions.RoleAlreadyExistsException;
 import com.staffing.role.entity.Role;
-import com.staffing.role.enums.RoleEnum;
+import com.staffing.enums.RoleEnum;
 import com.staffing.role.repository.RoleRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

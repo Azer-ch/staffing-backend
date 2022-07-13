@@ -1,6 +1,6 @@
-package com.staffing.user.createSuperUser;
+package com.staffing.file.config;
 
-import com.staffing.role.service.RoleService;
+import com.staffing.file.service.FileService;
 import com.staffing.user.entity.User;
 import com.staffing.user.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -8,12 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CreateSuperUser {
+public class FileConfig {
     @Bean
-    CommandLineRunner createSuperAdmin(UserService userService) {
+    CommandLineRunner initFiles(FileService fileService) {
         return args -> {
-            User SuperUser = new User("azer@azer.com","azer2000");
-            userService.addAdmin(SuperUser);
+            fileService.init();
         };
     }
 }

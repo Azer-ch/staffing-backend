@@ -6,15 +6,13 @@ import com.staffing.enterprise.repository.EnterpriseRepository;
 import com.staffing.exceptions.EmailAlreadyExistsException;
 import com.staffing.exceptions.NameAlreadyExistsException;
 import com.staffing.role.entity.Role;
-import com.staffing.role.enums.RoleEnum;
+import com.staffing.enums.RoleEnum;
 import com.staffing.role.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 @Service
 public class EnterpriseService {

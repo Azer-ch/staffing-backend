@@ -6,7 +6,6 @@ import com.staffing.enterprise.entity.Enterprise;
 import com.staffing.enterprise.repository.EnterpriseRepository;
 import com.staffing.exceptions.EmailAlreadyExistsException;
 import javassist.NotFoundException;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +33,7 @@ class EmployeeServiceTest {
         enterprise.setPassword("password");
         enterpriseRepository.save(enterprise);
         assertDoesNotThrow(() -> {
-            employeeService.addEmployee(employee, "ROLE_ENGINEER", enterprise);
+            employeeService.addEmployee(employee, "ROLE_ENGINEER", enterprise, files);
         });
     }
     @Test
@@ -47,7 +46,7 @@ class EmployeeServiceTest {
         enterprise1.setEmail("enterprise1@nterprise.com");
         enterprise1.setPassword("password");
         assertThrows(NotFoundException.class,() -> {
-            employeeService.addEmployee(employee1, "ROLE_ENGINEER", enterprise1);
+            employeeService.addEmployee(employee1, "ROLE_ENGINEER", enterprise1, files);
         });
     }
     @Test
@@ -62,7 +61,7 @@ class EmployeeServiceTest {
         enterprise2.setPassword("password");
         enterpriseRepository.save(enterprise2);
         assertThrows(EmailAlreadyExistsException.class, () -> {
-            employeeService.addEmployee(employee2, "ROLE_ENGINEER", enterprise2);
+            employeeService.addEmployee(employee2, "ROLE_ENGINEER", enterprise2, files);
         });
     }
 }

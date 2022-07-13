@@ -2,7 +2,7 @@ package com.staffing.role.entity;
 
 
 
-import com.staffing.role.enums.RoleEnum;
+import com.staffing.enums.RoleEnum;
 
 import javax.persistence.*;
 

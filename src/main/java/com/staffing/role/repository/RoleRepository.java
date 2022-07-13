@@ -1,7 +1,7 @@
 package com.staffing.role.repository;
 
 import com.staffing.role.entity.Role;
-import com.staffing.role.enums.RoleEnum;
+import com.staffing.enums.RoleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

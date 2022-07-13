@@ -37,7 +37,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/auth/login").permitAll()
-                .antMatchers("/admin").permitAll()
+                .antMatchers("/admin","/file").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
