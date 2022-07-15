@@ -1,5 +1,6 @@
 package com.staffing.enterprise.controller;
 
+import com.staffing.dto.AddEnterpriseRequest;
 import com.staffing.enterprise.entity.Enterprise;
 import com.staffing.enterprise.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,9 @@ import javax.validation.Valid;
 @RequestMapping("/enterprise")
 public class EnterpriseController {
     @Autowired private EnterpriseService enterpriseService;
-    @PostMapping
+    @PostMapping("/add")
     @RolesAllowed({"ROLE_ADMIN"})
-    public ResponseEntity<?> addEnterprise(@RequestBody @Valid Enterprise enterprise) {
+    public ResponseEntity<?> addEnterprise(@RequestBody @Valid AddEnterpriseRequest enterprise) {
         try{
             return ResponseEntity.ok(enterpriseService.addEnterprise(enterprise));
         }catch (Exception ex) {
@@ -24,7 +25,7 @@ public class EnterpriseController {
     }
     @DeleteMapping ("/{enterprise}")
     @RolesAllowed({"ROLE_ADMIN"})
-    public ResponseEntity<?> DeleteEnterprise(@PathVariable String enterprise) {
+    public ResponseEntity<?> deleteEnterprise(@PathVariable String enterprise) {
         try{
             return ResponseEntity.ok(enterpriseService.deleteEnterprise(enterprise));
         }catch (Exception NameAlreadyExistsException) {

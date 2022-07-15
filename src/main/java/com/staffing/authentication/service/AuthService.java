@@ -7,6 +7,7 @@ import com.staffing.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,12 +24,15 @@ public class AuthService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
-    public AuthResponse login(AuthRequest request) {
+    public AuthResponse login(AuthRequest request) throws Exception {
         try {
+            if(request.getPassword().length()<8){
+                throw new Exception("Password must be at least 8 characters long");
+            }
             Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             User user = (User) authentication.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(user);
-            return new AuthResponse(user.getEmail(), accessToken);
+            return new AuthResponse(user, accessToken);
         } catch (BadCredentialsException ex) {
             LOGGER.error("Bad credentials", ex);
             throw ex;

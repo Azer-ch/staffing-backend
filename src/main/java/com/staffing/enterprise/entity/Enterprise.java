@@ -25,6 +25,8 @@ public class Enterprise extends User {
 
     public Enterprise(String enterpriseName, String email, String password) {
         this.enterpriseName = enterpriseName;
+        this.email = email;
+        this.password = password;
     }
 
     public Enterprise() {

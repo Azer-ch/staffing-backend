@@ -1,5 +1,6 @@
 package com.staffing.enterprise.service;
 
+import com.staffing.dto.AddEnterpriseRequest;
 import com.staffing.employee.entity.Employee;
 import com.staffing.enterprise.entity.Enterprise;
 import com.staffing.enterprise.repository.EnterpriseRepository;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 @Service
 public class EnterpriseService {
@@ -23,8 +25,10 @@ public class EnterpriseService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public Enterprise addEnterprise( Enterprise enterprise) throws NameAlreadyExistsException, EmailAlreadyExistsException {
-        if (enterpriseRepository.existsByEnterpriseName(enterprise.getEnterpriseName())) {
+    public Enterprise addEnterprise(AddEnterpriseRequest enterprise) throws Exception {
+        if(!Objects.equals(enterprise.getPassword(), enterprise.getConfirmPassword()))
+            throw new Exception("Passwords do not match");
+        if (enterpriseRepository.existsByEnterpriseName(enterprise.getName())) {
             throw new NameAlreadyExistsException("enterprise name already exists");
         }
         if(enterpriseRepository.existsByEmail(enterprise.getEmail())){
@@ -33,11 +37,12 @@ public class EnterpriseService {
         if(!roleRepository.existsRoleByName(RoleEnum.ROLE_ENTERPRISE)) {
             roleRepository.save(new Role(RoleEnum.ROLE_ENTERPRISE.toString()));
         }
+        Enterprise newEnterprise = new Enterprise(enterprise.getName(), enterprise.getEmail(), enterprise.getPassword());
         Role role = roleRepository.findRoleByName(RoleEnum.ROLE_ENTERPRISE);
-        enterprise.addRole(role);
-        enterprise.setActive(true);
-        enterprise.setPassword(bCryptPasswordEncoder.encode(enterprise.getPassword()));
-        return enterpriseRepository.save(enterprise);
+        newEnterprise.addRole(role);
+        newEnterprise.setActive(true);
+        newEnterprise.setPassword(bCryptPasswordEncoder.encode(newEnterprise.getPassword()));
+        return enterpriseRepository.save(newEnterprise);
     }
     @Transactional
     public Enterprise deleteEnterprise(String enterpriseName) throws NameAlreadyExistsException {
