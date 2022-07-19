@@ -2,9 +2,12 @@ package com.staffing.dto;
 
 import com.staffing.enums.ContractEnum;
 import com.staffing.enums.GenderEnum;
+import com.staffing.information.param.entity.Param;
 
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 
 public class AddEmployeeRequest {
     private String email;
@@ -27,7 +30,7 @@ public class AddEmployeeRequest {
     private Date startDate;
     private Date endDate;
     private String category;
-    private long annualNetSalary;
+    private double annualNetSalary;
     private float chargeCoefficient;
     private String workTime;
     private float hourlyWage;
@@ -36,19 +39,13 @@ public class AddEmployeeRequest {
     private double monthlySalary;
     private int workDaysPerYear;
     private float workingHoursPerWeek;
-    private float navigoAmount;
-    private float navigoCharge;
-    private float navigoParticipationEmployee;
-    private float mutuelleAmount;
-    private float mutuelleCharge;
-    private float mutuelleParticipationEmployee;
-    private float restaurantTicketsAmount;
-    private float restaurantTicketsCharge;
-    private float restaurantTicketParticipationEmployee;
+    private List<Param> paramList;
     private String status;
     private Date availableAt;
+    private int tjm;
+    private String mobility;
 
-    public AddEmployeeRequest(String email, String password, String role, String firstName, String lastName, GenderEnum gender, Date dateOfBirth, String hrSupervisor, String manager, String type, String title, String phone, String country, String street, String city, long zipCode, ContractEnum contract, Date startDate, Date endDate, String category, long annualNetSalary, float chargeCoefficient, String workTime, float hourlyWage, Currency currency, String classification, double monthlySalary, int workDaysPerYear, float workingHoursPerWeek, float navigoAmount, float navigoCharge, float navigoParticipationEmployee, float mutuelleAmount, float mutuelleCharge, float mutuelleParticipationEmployee, float restaurantTicketsAmount, float restaurantTicketsCharge, float restaurantTicketParticipationEmployee, String status, Date availableAt) {
+    public AddEmployeeRequest(String email, String password, String role, String firstName, String lastName, GenderEnum gender, Date dateOfBirth, String hrSupervisor, String manager, String type, String title, String phone, String country, String street, String city, long zipCode, ContractEnum contract, Date startDate, Date endDate, String category, double annualNetSalary, float chargeCoefficient, String workTime, float hourlyWage, Currency currency, String classification, double monthlySalary, int workDaysPerYear, float workingHoursPerWeek, ArrayList<Param> paramList, String status, Date availableAt,int tjm, String mobility) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -78,17 +75,11 @@ public class AddEmployeeRequest {
         this.monthlySalary = monthlySalary;
         this.workDaysPerYear = workDaysPerYear;
         this.workingHoursPerWeek = workingHoursPerWeek;
-        this.navigoAmount = navigoAmount;
-        this.navigoCharge = navigoCharge;
-        this.navigoParticipationEmployee = navigoParticipationEmployee;
-        this.mutuelleAmount = mutuelleAmount;
-        this.mutuelleCharge = mutuelleCharge;
-        this.mutuelleParticipationEmployee = mutuelleParticipationEmployee;
-        this.restaurantTicketsAmount = restaurantTicketsAmount;
-        this.restaurantTicketsCharge = restaurantTicketsCharge;
-        this.restaurantTicketParticipationEmployee = restaurantTicketParticipationEmployee;
+        this.paramList = paramList;
         this.status = status;
         this.availableAt = availableAt;
+        this.tjm = tjm;
+        this.mobility = mobility;
     }
 
     public String getEmail() {
@@ -115,37 +106,6 @@ public class AddEmployeeRequest {
         this.role = role;
     }
 
-    public float getMutuelleParticipationEmployee() {
-        return mutuelleParticipationEmployee;
-    }
-
-    public void setMutuelleParticipationEmployee(float mutuelleParticipationEmployee) {
-        this.mutuelleParticipationEmployee = mutuelleParticipationEmployee;
-    }
-
-    public float getRestaurantTicketsAmount() {
-        return restaurantTicketsAmount;
-    }
-
-    public void setRestaurantTicketsAmount(float restaurantTicketsAmount) {
-        this.restaurantTicketsAmount = restaurantTicketsAmount;
-    }
-
-    public float getRestaurantTicketsCharge() {
-        return restaurantTicketsCharge;
-    }
-
-    public void setRestaurantTicketsCharge(float restaurantTicketsCharge) {
-        this.restaurantTicketsCharge = restaurantTicketsCharge;
-    }
-
-    public float getRestaurantTicketParticipationEmployee() {
-        return restaurantTicketParticipationEmployee;
-    }
-
-    public void setRestaurantTicketParticipationEmployee(float restaurantTicketParticipationEmployee) {
-        this.restaurantTicketParticipationEmployee = restaurantTicketParticipationEmployee;
-    }
 
     public String getStatus() {
         return status;
@@ -299,11 +259,11 @@ public class AddEmployeeRequest {
         this.category = category;
     }
 
-    public long getAnnualNetSalary() {
+    public double getAnnualNetSalary() {
         return annualNetSalary;
     }
 
-    public void setAnnualNetSalary(long annualNetSalary) {
+    public void setAnnualNetSalary(double annualNetSalary) {
         this.annualNetSalary = annualNetSalary;
     }
 
@@ -371,43 +331,68 @@ public class AddEmployeeRequest {
         this.workingHoursPerWeek = workingHoursPerWeek;
     }
 
-    public float getNavigoAmount() {
-        return navigoAmount;
+
+    public int getTjm() {
+        return tjm;
     }
 
-    public void setNavigoAmount(float navigoAmount) {
-        this.navigoAmount = navigoAmount;
+    public List<Param> getParamList() {
+        return paramList;
     }
 
-    public float getNavigoCharge() {
-        return navigoCharge;
+    public void setParamList(List<Param> paramList) {
+        this.paramList = paramList;
     }
 
-    public void setNavigoCharge(float navigoCharge) {
-        this.navigoCharge = navigoCharge;
+    public void setTjm(int tjm) {
+        this.tjm = tjm;
     }
 
-    public float getNavigoParticipationEmployee() {
-        return navigoParticipationEmployee;
+    public String getMobility() {
+        return mobility;
     }
 
-    public void setNavigoParticipationEmployee(float navigoParticipationEmployee) {
-        this.navigoParticipationEmployee = navigoParticipationEmployee;
+    public void setMobility(String mobility) {
+        this.mobility = mobility;
     }
 
-    public float getMutuelleAmount() {
-        return mutuelleAmount;
-    }
-
-    public void setMutuelleAmount(float mutuelleAmount) {
-        this.mutuelleAmount = mutuelleAmount;
-    }
-
-    public float getMutuelleCharge() {
-        return mutuelleCharge;
-    }
-
-    public void setMutuelleCharge(float mutuelleCharge) {
-        this.mutuelleCharge = mutuelleCharge;
+    @Override
+    public String toString() {
+        return "AddEmployeeRequest{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender=" + gender +
+                ", dateOfBirth=" + dateOfBirth +
+                ", hrSupervisor='" + hrSupervisor + '\'' +
+                ", manager='" + manager + '\'' +
+                ", type='" + type + '\'' +
+                ", title='" + title + '\'' +
+                ", phone='" + phone + '\'' +
+                ", country='" + country + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode=" + zipCode +
+                ", contract=" + contract +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", category='" + category + '\'' +
+                ", annualNetSalary=" + annualNetSalary +
+                ", chargeCoefficient=" + chargeCoefficient +
+                ", workTime='" + workTime + '\'' +
+                ", hourlyWage=" + hourlyWage +
+                ", currency=" + currency +
+                ", classification='" + classification + '\'' +
+                ", monthlySalary=" + monthlySalary +
+                ", workDaysPerYear=" + workDaysPerYear +
+                ", workingHoursPerWeek=" + workingHoursPerWeek +
+                ", paramList=" + paramList +
+                ", status='" + status + '\'' +
+                ", availableAt=" + availableAt +
+                ", tjm=" + tjm +
+                ", mobility='" + mobility + '\'' +
+                '}';
     }
 }

@@ -16,6 +16,8 @@ import com.staffing.information.contractualAdvantages.entity.ContractualAdvantag
 import com.staffing.information.contractualAdvantages.repository.ContractualAdvantagesRepository;
 import com.staffing.information.generalInformation.entity.GeneralInformation;
 import com.staffing.information.generalInformation.repository.GeneralInformationRepository;
+import com.staffing.information.param.entity.Param;
+import com.staffing.information.param.repository.ParamRepository;
 import com.staffing.role.entity.Role;
 import com.staffing.enums.RoleEnum;
 import com.staffing.role.repository.RoleRepository;
@@ -27,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,6 +53,8 @@ public class EmployeeService {
     private GeneralInformationRepository generalInformationRepository;
     @Autowired
     private ContractualAdvantagesRepository contractualAdvantagesRepository;
+    @Autowired
+    private ParamRepository paramRepository;
 
     public Employee addEmployee(AddEmployeeRequest addEmployeeRequest, String roleName, Enterprise enterprise, MultipartFile[] files) throws NotFoundException, EmailAlreadyExistsException, IOException {
         if(employeeRepository.existsByEmail(addEmployeeRequest.getEmail())){
@@ -62,9 +67,15 @@ public class EmployeeService {
             throw new NotFoundException("enterprise not found");
         }
         Address address = new Address(addEmployeeRequest.getCountry(), addEmployeeRequest.getCity(), addEmployeeRequest.getStreet(), addEmployeeRequest.getZipCode());
-        ComplementaryInformation complementaryInformation = new ComplementaryInformation(addEmployeeRequest.getStatus(), addEmployeeRequest.getAvailableAt());
+        ComplementaryInformation complementaryInformation = new ComplementaryInformation(addEmployeeRequest.getStatus(), addEmployeeRequest.getAvailableAt(), addEmployeeRequest.getTjm(), addEmployeeRequest.getMobility());
         GeneralInformation generalInformation = new GeneralInformation(addEmployeeRequest.getContract(), addEmployeeRequest.getStartDate(), addEmployeeRequest.getEndDate(), addEmployeeRequest.getCategory(), addEmployeeRequest.getAnnualNetSalary(), addEmployeeRequest.getChargeCoefficient(), addEmployeeRequest.getWorkTime(), addEmployeeRequest.getHourlyWage(), addEmployeeRequest.getCurrency(), addEmployeeRequest.getClassification(), addEmployeeRequest.getMonthlySalary(), addEmployeeRequest.getWorkDaysPerYear(), addEmployeeRequest.getWorkingHoursPerWeek());
-        ContractualAdvantages contractualAdvantages = new ContractualAdvantages(addEmployeeRequest.getNavigoAmount(), addEmployeeRequest.getNavigoCharge(), addEmployeeRequest.getNavigoParticipationEmployee(), addEmployeeRequest.getMutuelleAmount(), addEmployeeRequest.getMutuelleCharge(), addEmployeeRequest.getMutuelleParticipationEmployee(), addEmployeeRequest.getRestaurantTicketsAmount(), addEmployeeRequest.getRestaurantTicketsCharge(), addEmployeeRequest.getRestaurantTicketParticipationEmployee());
+        ArrayList<Param> params = (ArrayList<Param>) addEmployeeRequest.getParamList();
+        for(Param param : params){
+            if(!paramRepository.existsByName(param.getName())){
+                paramRepository.save(param);
+            }
+        }
+        ContractualAdvantages contractualAdvantages = new ContractualAdvantages(addEmployeeRequest.getParamList());
         Employee employee = new Employee(addEmployeeRequest);
         addressRepository.save(address);
         complementaryInformationRepository.save(complementaryInformation);

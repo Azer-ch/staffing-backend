@@ -21,7 +21,7 @@ public class GeneralInformation {
     @Column
     private String category;
     @Column
-    private long annualNetSalary;
+    private double annualNetSalary;
     @Column
     private float chargeCoefficient;
     @Column
@@ -42,7 +42,7 @@ public class GeneralInformation {
     public GeneralInformation() {
     }
 
-    public GeneralInformation(ContractEnum contract, Date startDate, Date endDate, String category, long annualNetSalary, float chargeCoefficient, String workTime, float hourlyWage, Currency currency, String classification, double monthlySalary, int workDaysPerYear, float workingHoursPerWeek) {
+    public GeneralInformation(ContractEnum contract, Date startDate, Date endDate, String category, double annualNetSalary, float chargeCoefficient, String workTime, float hourlyWage, Currency currency, String classification, double monthlySalary, int workDaysPerYear, float workingHoursPerWeek) {
         this.contract = contract;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -98,11 +98,11 @@ public class GeneralInformation {
         this.category = category;
     }
 
-    public long getAnnualNetSalary() {
+    public double getAnnualNetSalary() {
         return annualNetSalary;
     }
 
-    public void setAnnualNetSalary(long annualNetSalary) {
+    public void setAnnualNetSalary(double annualNetSalary) {
         this.annualNetSalary = annualNetSalary;
     }
 

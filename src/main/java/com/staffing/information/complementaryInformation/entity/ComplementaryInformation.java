@@ -14,10 +14,15 @@ public class ComplementaryInformation {
     private String status;
     @Column
     private Date availableAt;
-
-    public ComplementaryInformation(String status, Date availableAt) {
+    @Column
+    private int tjm;
+    @Column
+    private String mobility;
+    public ComplementaryInformation(String status, Date availableAt,int tjm, String mobility) {
         this.status = status;
         this.availableAt = availableAt;
+        this.tjm = tjm;
+        this.mobility = mobility;
     }
 
     public ComplementaryInformation() {
@@ -46,5 +51,21 @@ public class ComplementaryInformation {
 
     public void setAvailableAt(Date availableAt) {
         this.availableAt = availableAt;
+    }
+
+    public int getTjm() {
+        return tjm;
+    }
+
+    public void setTjm(int tjm) {
+        this.tjm = tjm;
+    }
+
+    public String getMobility() {
+        return mobility;
+    }
+
+    public void setMobility(String mobility) {
+        this.mobility = mobility;
     }
 }

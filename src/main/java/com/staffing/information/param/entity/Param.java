@@ -9,19 +9,24 @@ public class Param {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column
-    private float navigoMontant;
+    private String name;
     @Column
-    private float mutuelleMontant;
+    private float amount;
     @Column
-    private float restaurantMontant;
-
+    private float charge;
+    @Column
+    private float participation;
+    @Column
+    private String type;
     public Param() {
     }
 
-    public Param(float navigoMontant, float mutuelleMontant, float restaurantMontant) {
-        this.navigoMontant = navigoMontant;
-        this.mutuelleMontant = mutuelleMontant;
-        this.restaurantMontant = restaurantMontant;
+    public Param(String name, float amount, float charge, float participation, String type) {
+        this.name = name;
+        this.amount = amount;
+        this.charge = charge;
+        this.participation = participation;
+        this.type = type;
     }
 
     public Long getId() {
@@ -32,37 +37,55 @@ public class Param {
         this.id = id;
     }
 
-    public float getNavigoMontant() {
-        return navigoMontant;
+    public String getName() {
+        return name;
     }
 
-    public void setNavigoMontant(float navigoMontant) {
-        this.navigoMontant = navigoMontant;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public float getMutuelleMontant() {
-        return mutuelleMontant;
+    public float getAmount() {
+        return amount;
     }
 
-    public void setMutuelleMontant(float mutuelleMontant) {
-        this.mutuelleMontant = mutuelleMontant;
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 
-    public float getRestaurantMontant() {
-        return restaurantMontant;
+    public float getCharge() {
+        return charge;
     }
 
-    public void setRestaurantMontant(float restaurantMontant) {
-        this.restaurantMontant = restaurantMontant;
+    public void setCharge(float charge) {
+        this.charge = charge;
+    }
+
+    public float getParticipation() {
+        return participation;
+    }
+
+    public void setParticipation(float participation) {
+        this.participation = participation;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
     public String toString() {
         return "Param{" +
                 "id=" + id +
-                ", navigoMontant=" + navigoMontant +
-                ", mutuelleMontant=" + mutuelleMontant +
-                ", restaurantMontant=" + restaurantMontant +
+                ", name='" + name + '\'' +
+                ", amount=" + amount +
+                ", charge=" + charge +
+                ", participation=" + participation +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
