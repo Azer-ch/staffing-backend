@@ -1,5 +1,6 @@
 package com.staffing.file.service;
 
+import com.staffing.employee.entity.Employee;
 import com.staffing.file.entity.File;
 import com.staffing.file.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class FileService {
             throw new RuntimeException("Could not initialize folder for upload!");
         }
     }
-    public List<File> saveFiles(MultipartFile[] files) throws IOException {
+    public List<File> saveFiles(MultipartFile[] files, Employee employee) throws IOException {
         try {
             List<File> fileList = new ArrayList<File>();
             for (MultipartFile file : files) {
@@ -38,6 +39,7 @@ public class FileService {
                 String fileName = file.getOriginalFilename()+UUID.randomUUID();
                 Files.copy(file.getInputStream(), this.root.resolve(fileName));
                 File fileEntity = new File(fileName, sourceFileContent, fileContentType);
+                fileEntity.setEmployee(employee);
                 fileList.add(fileEntity);
             }
             fileRepository.saveAll(fileList);

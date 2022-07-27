@@ -1,14 +1,18 @@
 package com.staffing.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.staffing.enums.ContractEnum;
 import com.staffing.enums.GenderEnum;
 import com.staffing.information.param.entity.Param;
+import lombok.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
 import java.util.List;
-
 public class AddEmployeeRequest {
     private String email;
     private String password;
@@ -16,7 +20,9 @@ public class AddEmployeeRequest {
     private String firstName;
     private String lastName;
     private GenderEnum gender;
-    private Date dateOfBirth;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
     private String hrSupervisor;
     private String manager;
     private String type;
@@ -27,25 +33,31 @@ public class AddEmployeeRequest {
     private String city;
     private long zipCode;
     private ContractEnum contract;
-    private Date startDate;
-    private Date endDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
     private String category;
     private double annualNetSalary;
     private float chargeCoefficient;
     private String workTime;
     private float hourlyWage;
-    private Currency currency;
+    private String currency;
     private String classification;
     private double monthlySalary;
     private int workDaysPerYear;
     private float workingHoursPerWeek;
     private List<Param> paramList;
     private String status;
-    private Date availableAt;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate availableAt;
     private int tjm;
     private String mobility;
 
-    public AddEmployeeRequest(String email, String password, String role, String firstName, String lastName, GenderEnum gender, Date dateOfBirth, String hrSupervisor, String manager, String type, String title, String phone, String country, String street, String city, long zipCode, ContractEnum contract, Date startDate, Date endDate, String category, double annualNetSalary, float chargeCoefficient, String workTime, float hourlyWage, Currency currency, String classification, double monthlySalary, int workDaysPerYear, float workingHoursPerWeek, ArrayList<Param> paramList, String status, Date availableAt,int tjm, String mobility) {
+    public AddEmployeeRequest(String email, String password, String role, String firstName, String lastName, GenderEnum gender, LocalDate dateOfBirth, String hrSupervisor, String manager, String type, String title, String phone, String country, String street, String city, long zipCode, ContractEnum contract, LocalDate startDate, LocalDate endDate, String category, double annualNetSalary, float chargeCoefficient, String workTime, float hourlyWage, String currency, String classification, double monthlySalary, int workDaysPerYear, float workingHoursPerWeek, ArrayList<Param> paramList, String status, LocalDate availableAt,int tjm, String mobility) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -115,11 +127,11 @@ public class AddEmployeeRequest {
         this.status = status;
     }
 
-    public Date getAvailableAt() {
+    public LocalDate getAvailableAt() {
         return availableAt;
     }
 
-    public void setAvailableAt(Date availableAt) {
+    public void setAvailableAt(LocalDate availableAt) {
         this.availableAt = availableAt;
     }
 
@@ -147,11 +159,11 @@ public class AddEmployeeRequest {
         this.gender = gender;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -235,19 +247,19 @@ public class AddEmployeeRequest {
         this.contract = contract;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -291,11 +303,11 @@ public class AddEmployeeRequest {
         this.hourlyWage = hourlyWage;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

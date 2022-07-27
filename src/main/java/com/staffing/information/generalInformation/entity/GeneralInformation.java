@@ -1,9 +1,12 @@
 package com.staffing.information.generalInformation.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.staffing.enums.ContractEnum;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Currency;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -15,9 +18,13 @@ public class GeneralInformation {
     @Enumerated(EnumType.STRING)
     private ContractEnum contract;
     @Column
-    private Date startDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
     @Column
-    private Date endDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
     @Column
     private String category;
     @Column
@@ -29,7 +36,7 @@ public class GeneralInformation {
     @Column
     private float hourlyWage;
     @Column
-    private Currency currency;
+    private String currency;
     @Column
     private String classification;
     @Column
@@ -42,7 +49,7 @@ public class GeneralInformation {
     public GeneralInformation() {
     }
 
-    public GeneralInformation(ContractEnum contract, Date startDate, Date endDate, String category, double annualNetSalary, float chargeCoefficient, String workTime, float hourlyWage, Currency currency, String classification, double monthlySalary, int workDaysPerYear, float workingHoursPerWeek) {
+    public GeneralInformation(ContractEnum contract, LocalDate startDate, LocalDate endDate, String category, double annualNetSalary, float chargeCoefficient, String workTime, float hourlyWage, String currency, String classification, double monthlySalary, int workDaysPerYear, float workingHoursPerWeek) {
         this.contract = contract;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -74,19 +81,19 @@ public class GeneralInformation {
         this.contract = contract;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -130,11 +137,11 @@ public class GeneralInformation {
         this.hourlyWage = hourlyWage;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

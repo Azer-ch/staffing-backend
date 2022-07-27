@@ -1,6 +1,10 @@
 package com.staffing.information.complementaryInformation.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Currency;
 import java.util.Date;
 
@@ -13,12 +17,14 @@ public class ComplementaryInformation {
     @Column
     private String status;
     @Column
-    private Date availableAt;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate availableAt;
     @Column
     private int tjm;
     @Column
     private String mobility;
-    public ComplementaryInformation(String status, Date availableAt,int tjm, String mobility) {
+    public ComplementaryInformation(String status, LocalDate availableAt,int tjm, String mobility) {
         this.status = status;
         this.availableAt = availableAt;
         this.tjm = tjm;
@@ -45,11 +51,11 @@ public class ComplementaryInformation {
         this.status = status;
     }
 
-    public Date getAvailableAt() {
+    public LocalDate getAvailableAt() {
         return availableAt;
     }
 
-    public void setAvailableAt(Date availableAt) {
+    public void setAvailableAt(LocalDate availableAt) {
         this.availableAt = availableAt;
     }
 
@@ -67,5 +73,16 @@ public class ComplementaryInformation {
 
     public void setMobility(String mobility) {
         this.mobility = mobility;
+    }
+
+    @Override
+    public String toString() {
+        return "ComplementaryInformation{" +
+                "id=" + id +
+                ", status='" + status + '\'' +
+                ", availableAt=" + availableAt +
+                ", tjm=" + tjm +
+                ", mobility='" + mobility + '\'' +
+                '}';
     }
 }

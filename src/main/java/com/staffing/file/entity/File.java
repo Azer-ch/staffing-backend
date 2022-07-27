@@ -63,6 +63,14 @@ public class File {
         this.fileType = fileType;
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
     @Override
     public String toString() {
         return "File{" +

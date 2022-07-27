@@ -1,6 +1,7 @@
 package com.staffing.employee.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.staffing.dto.AddEmployeeRequest;
 import com.staffing.enterprise.entity.Enterprise;
@@ -10,9 +11,13 @@ import com.staffing.information.address.entity.Address;
 import com.staffing.information.complementaryInformation.entity.ComplementaryInformation;
 import com.staffing.information.contractualAdvantages.entity.ContractualAdvantages;
 import com.staffing.information.generalInformation.entity.GeneralInformation;
+import com.staffing.leave.entity.Leave;
+import com.staffing.mission.entity.Mission;
 import com.staffing.user.entity.User;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +25,6 @@ import java.util.List;
 @Entity(name = "Employee")
 @Table(name = "employee")
 public class Employee extends User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "employee_id")
-    private Long id;
     @Column
     private boolean isActive;
     @Column
@@ -33,7 +34,9 @@ public class Employee extends User {
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
     @Column
-    private Date dateOfBirth;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
     @ManyToOne
     private Employee hrSupervisor;
     @ManyToOne
@@ -55,14 +58,22 @@ public class Employee extends User {
     private GeneralInformation generalInformation;
     @OneToOne
     private ContractualAdvantages contractualAdvantages;
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<File> cvs = new ArrayList<>();
+
+    @OneToMany( mappedBy = "employee",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Leave> leaves  = new ArrayList<>();
+
+    @OneToMany( mappedBy = "employee",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Mission> missions  = new ArrayList<>();
 
     public Employee() {
     }
 
-    public Employee(String email, String password, String firstName, String lastName, GenderEnum gender, Date dateOfBirth, Employee hrSupervisor, Employee manager, String type, String title, String phone, Address address, Enterprise enterprise, ComplementaryInformation complementaryInformation, GeneralInformation generalInformation, ContractualAdvantages contractualAdvantages) {
+    public Employee(String email, String password, String firstName, String lastName, GenderEnum gender, LocalDate dateOfBirth, Employee hrSupervisor, Employee manager, String type, String title, String phone, Address address, Enterprise enterprise, ComplementaryInformation complementaryInformation, GeneralInformation generalInformation, ContractualAdvantages contractualAdvantages) {
         super(email, password);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -116,11 +127,11 @@ public class Employee extends User {
         this.gender = gender;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -234,6 +245,28 @@ public class Employee extends User {
         this.cvs.add(cv);
     }
 
+    public List<Leave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<Leave> leaves) {
+        this.leaves = leaves;
+    }
+    public void addLeave(Leave leave) {
+        this.leaves.add(leave);
+    }
+
+    public List<Mission> getMissions() {
+        return missions;
+    }
+
+    public void setMissions(List<Mission> missions) {
+        this.missions = missions;
+    }
+    public void addMission(Mission mission){
+        this.missions.add(mission);
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -245,11 +278,10 @@ public class Employee extends User {
                 ", dateOfBirth=" + dateOfBirth +
                 ", hrSupervisor=" + hrSupervisor +
                 ", manager=" + manager +
+                ", type='" + type + '\'' +
+                ", title='" + title + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address=" + address +
-                ", enterprise=" + enterprise +
-                ", generalInformation=" + generalInformation +
-                ", contractualAdvantages=" + contractualAdvantages +
                 '}';
     }
 }
