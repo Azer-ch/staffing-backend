@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.staffing.employee.entity.Employee;
 import com.staffing.enums.LeaveEnum;
+import com.staffing.enums.StatusEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -28,15 +29,19 @@ public class Leave {
     @ManyToOne
     @JsonBackReference
     private Employee employee;
-
+    @Column
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status;
     public Leave(LeaveEnum type, LocalDateTime startDate, LocalDateTime endDate, Employee employee) {
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
         this.employee = employee;
+        this.status = StatusEnum.PENDING;
     }
 
     public Leave() {
+        this.status = StatusEnum.PENDING;
     }
 
     public Long getId() {
@@ -77,6 +82,14 @@ public class Leave {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
     }
 
     @Override

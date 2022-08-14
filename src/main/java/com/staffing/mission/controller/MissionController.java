@@ -1,5 +1,6 @@
 package com.staffing.mission.controller;
 
+import com.staffing.dto.AddMissionRequest;
 import com.staffing.mission.entity.Mission;
 import com.staffing.mission.service.MissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,11 @@ import java.util.Date;
 public class MissionController {
     @Autowired
     private MissionService missionService;
-    @RolesAllowed({"ROLE_ENGINEER"})
+    @RolesAllowed({"ROLE_ENTERPRISE"})
     @PostMapping("/add")
-    public ResponseEntity<?> addMission(@ModelAttribute @Valid Mission mission, HttpServletRequest request) {
+    public ResponseEntity<?> addMission(@ModelAttribute @Valid AddMissionRequest mission) {
         try {
-            return ResponseEntity.ok(missionService.addMission(mission, request.getUserPrincipal().getName()));
+            return ResponseEntity.ok(missionService.addMission(mission));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

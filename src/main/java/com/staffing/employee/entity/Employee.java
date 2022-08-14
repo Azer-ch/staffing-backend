@@ -1,8 +1,6 @@
 package com.staffing.employee.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import com.staffing.dto.AddEmployeeRequest;
 import com.staffing.enterprise.entity.Enterprise;
 import com.staffing.enums.GenderEnum;
@@ -19,11 +17,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity(name = "Employee")
 @Table(name = "employee")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employee extends User {
     @Column
     private boolean isActive;
@@ -66,8 +64,7 @@ public class Employee extends User {
     @JsonManagedReference
     private List<Leave> leaves  = new ArrayList<>();
 
-    @OneToMany( mappedBy = "employee",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "employees",cascade = CascadeType.ALL)
     private List<Mission> missions  = new ArrayList<>();
 
     public Employee() {
