@@ -137,4 +137,8 @@ public class EmployeeService {
             employee.addCvs(file);
         return employeeRepository.save(employee);
     }
+
+    public Employee getEmployee(Long id) throws NotFoundException {
+        return employeeRepository.findById(id).orElseThrow(() -> new NotFoundException("employee not found"));
+    }
 }

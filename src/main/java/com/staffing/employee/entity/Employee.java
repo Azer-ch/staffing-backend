@@ -21,7 +21,6 @@ import java.util.List;
 
 @Entity(name = "Employee")
 @Table(name = "employee")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employee extends User {
     @Column
     private boolean isActive;
@@ -32,7 +31,7 @@ public class Employee extends User {
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
     @Column
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
     @ManyToOne
@@ -64,8 +63,9 @@ public class Employee extends User {
     @JsonManagedReference
     private List<Leave> leaves  = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "employees",cascade = CascadeType.ALL)
-    private List<Mission> missions  = new ArrayList<>();
+    @ManyToMany(mappedBy = "employees", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Mission> missions = new ArrayList<>();
 
     public Employee() {
     }
@@ -249,6 +249,7 @@ public class Employee extends User {
     public void setLeaves(List<Leave> leaves) {
         this.leaves = leaves;
     }
+
     public void addLeave(Leave leave) {
         this.leaves.add(leave);
     }
@@ -260,25 +261,13 @@ public class Employee extends User {
     public void setMissions(List<Mission> missions) {
         this.missions = missions;
     }
-    public void addMission(Mission mission){
+
+    public void addMission(Mission mission) {
         this.missions.add(mission);
     }
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", isActive=" + isActive +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender=" + gender +
-                ", dateOfBirth=" + dateOfBirth +
-                ", hrSupervisor=" + hrSupervisor +
-                ", manager=" + manager +
-                ", type='" + type + '\'' +
-                ", title='" + title + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address=" + address +
-                '}';
+        return "Employee{" + "id=" + id + ", isActive=" + isActive + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", hrSupervisor=" + hrSupervisor + ", manager=" + manager + ", type='" + type + '\'' + ", title='" + title + '\'' + ", phone='" + phone + '\'' + ", address=" + address + '}';
     }
 }

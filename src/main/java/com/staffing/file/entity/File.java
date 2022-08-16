@@ -1,6 +1,8 @@
 package com.staffing.file.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.staffing.employee.entity.Employee;
 
 import javax.persistence.*;
@@ -73,11 +75,6 @@ public class File {
 
     @Override
     public String toString() {
-        return "File{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", content='" + content + '\'' +
-                ", fileType='" + fileType + '\'' +
-                '}';
+        return "File{" + "id=" + id + ", name='" + name + '\'' + ", content='" + content + '\'' + ", fileType='" + fileType + '\'' + '}';
     }
 }

@@ -36,4 +36,13 @@ public class EmployeeController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+    @GetMapping("/{id}")
+    @RolesAllowed({"ROLE_ENTERPRISE"})
+    public ResponseEntity<?> getEmployee(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(employeeService.getEmployee(id));
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 }

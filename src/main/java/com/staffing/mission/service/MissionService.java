@@ -1,8 +1,10 @@
 package com.staffing.mission.service;
 
 import com.staffing.dto.AddMissionRequest;
+import com.staffing.dto.MissionResponseDto;
 import com.staffing.employee.entity.Employee;
 import com.staffing.employee.repository.EmployeeRepository;
+import com.staffing.enterprise.entity.Enterprise;
 import com.staffing.enterprise.repository.EnterpriseRepository;
 import com.staffing.enums.StatusEnum;
 import com.staffing.leave.entity.Leave;
@@ -14,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -48,8 +49,7 @@ public class MissionService {
                 }
                 if (!isEngineer)
                     throw new NotFoundException("No engineer found with email: " + email);
-            }
-            else
+            } else
                 throw new NotFoundException("No employee found with email: " + email);
             Employee employee = employeeRepository.findByEmail(email);
             if (!employee.getLeaves().isEmpty())
@@ -68,10 +68,11 @@ public class MissionService {
         }
         return missionRepository.save(mission);
     }
-    public void editMission(Long id , AddMissionRequest newMission) throws Exception{
+
+    public void editMission(Long id, AddMissionRequest newMission) throws Exception {
         if (!missionRepository.existsById(id))
             throw new NotFoundException("Mission not found");
-        if(!enterpriseRepository.existsByEnterpriseName(newMission.getClient()))
+        if (!enterpriseRepository.existsByEnterpriseName(newMission.getClient()))
             throw new NotFoundException("Enterprise not found");
         Mission mission = missionRepository.getById(id);
         for (String email : newMission.getEmployeeList()) {
@@ -104,39 +105,83 @@ public class MissionService {
         mission.setEndDate(newMission.getEndDate());
         mission.setClient(enterpriseRepository.findByEnterpriseName(newMission.getClient()));
     }
+
     public int countNumberOfMissionDays(String email) throws Exception {
         if (!employeeRepository.existsByEmail(email))
             throw new Exception("Employee does not exist");
         int count = 0;
         for (Mission m : employeeRepository.findByEmail(email).getMissions()) {
-            count+=DAYS.between(m.getStartDate(), m.getEndDate());
+            count += DAYS.between(m.getStartDate(), m.getEndDate());
         }
         return count;
     }
+
     public void deleteMission(Long id) throws Exception {
         if (!missionRepository.existsById(id))
             throw new Exception("Mission not found");
-        Mission mission = missionRepository.getById(id);
+        Mission mission = missionRepository.findById(id).get();
         mission.setStatus(StatusEnum.DELETED);
     }
-    public void validateMission(Long id , String enterprise) throws Exception {
+
+    public Mission validateMission(Long id, String enterprise) throws Exception {
         if (!missionRepository.existsById(id))
             throw new Exception("Mission not found");
-        Mission mission = missionRepository.getById(id);
-        if (!enterpriseRepository.existsByEnterpriseName(enterprise))
+        Mission mission = missionRepository.findById(id).get();
+        if (!enterpriseRepository.existsByEmail(enterprise))
             throw new Exception("Enterprise not found");
-        if(!Objects.equals(enterprise, mission.getClient().getEnterpriseName()))
+        if (!Objects.equals(enterprise, mission.getClient().getEmail()))
             throw new Exception("This enterprise is not the owner of the mission");
         mission.setStatus(StatusEnum.ACCEPTED);
+        return mission;
     }
-    public List<Mission> getAllMissionsByEmployee(String email) throws Exception {
+
+    public List<Mission> getMissionsByEmployee(String email, StatusEnum status) throws Exception {
         if (!employeeRepository.existsByEmail(email))
             throw new Exception("Employee does not exist");
         List<Mission> missions = new ArrayList<>();
         for (Mission m : employeeRepository.findByEmail(email).getMissions()) {
-            if (m.getStatus().equals(StatusEnum.ACCEPTED))
+            if (m.getStatus().equals(status))
                 missions.add(m);
         }
         return missions;
+    }
+
+    public List<MissionResponseDto> getMissionsByEnterprise(String enterprise, StatusEnum status) throws Exception {
+        if (!enterpriseRepository.existsByEmail(enterprise))
+            throw new Exception("Enterprise not found");
+        List<MissionResponseDto> missions = new ArrayList<>();
+        for (Mission m : enterpriseRepository.findByEmail(enterprise).getMissions()) {
+            if (m.getStatus().equals(status)){
+                MissionResponseDto missionResponseDto = new MissionResponseDto();
+                missionResponseDto.setId(m.getId());
+                missionResponseDto.setClient(enterpriseRepository.findByEmail(enterprise).getEnterpriseName());
+                missionResponseDto.setTitle(m.getTitle());
+                missionResponseDto.setStatus(status);
+                missionResponseDto.setStartDate(m.getStartDate());
+                missionResponseDto.setEndDate(m.getEndDate());
+                for(Employee e : m.getEmployees()){
+                    missionResponseDto.addEmployee(e.getEmail());
+                }
+                missions.add(missionResponseDto);
+            }
+        }
+        return missions;
+    }
+
+    public List<Employee> getEmployeesByMission(Long id) throws Exception {
+        if (!missionRepository.existsById(id))
+            throw new Exception("Mission not found");
+        else {
+            Mission mission = missionRepository.findById(id).get();
+            return mission.getEmployees();
+        }
+    }
+    public Enterprise getClientByMission(Long id) throws Exception {
+        if (!missionRepository.existsById(id))
+            throw new Exception("Mission not found");
+        else {
+            Mission mission = missionRepository.findById(id).get();
+            return mission.getClient();
+        }
     }
 }

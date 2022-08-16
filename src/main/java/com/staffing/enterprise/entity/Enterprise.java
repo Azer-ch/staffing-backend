@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity(name = "enterprise")
 @Table(name = "enterprise", uniqueConstraints = {@UniqueConstraint(name = "enterprise_name_unique", columnNames = "enterprise_name")})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Enterprise extends User {
     @Column
     protected boolean isActive;
@@ -69,6 +68,7 @@ public class Enterprise extends User {
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
+
     public void addEmployee(Employee employee) {
         this.employees.add(employee);
     }
@@ -80,21 +80,14 @@ public class Enterprise extends User {
     public void setMissions(List<Mission> missions) {
         this.missions = missions;
     }
+
     public void addMission(Mission mission) {
         this.missions.add(mission);
     }
 
     @Override
     public String toString() {
-        return "Enterprise{" +
-                "enterpriseName='" + enterpriseName + '\'' +
-                ", id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles + '\'' +
-                ", isActive=" + isActive +'\'' +
-                ", employees=" + employees +
-                '}';
+        return "Enterprise{" + "enterpriseName='" + enterpriseName + '\'' + ", id=" + id + ", email='" + email + '\'' + ", password='" + password + '\'' + ", roles=" + roles + '\'' + ", isActive=" + isActive + '\'' + ", employees=" + employees + '}';
     }
 
 }

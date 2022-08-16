@@ -1,12 +1,8 @@
 package com.staffing.mission.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.staffing.employee.entity.Employee;
 import com.staffing.enterprise.entity.Enterprise;
-import com.staffing.enums.RoleEnum;
 import com.staffing.enums.StatusEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,7 +13,6 @@ import java.util.List;
 
 @Entity(name = "Mission")
 @Table(name = "mission")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Mission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,10 +31,12 @@ public class Mission {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endDate;
     @ManyToMany
+    @JsonBackReference
     private List<Employee> employees = new ArrayList<>();
     @Column
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
+
     public Mission() {
         this.status = StatusEnum.PENDING;
     }
@@ -97,10 +94,10 @@ public class Mission {
         return employees;
     }
 
-
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
+
     public void addEmployee(Employee employee) {
         this.employees.add(employee);
     }

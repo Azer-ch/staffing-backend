@@ -2,6 +2,8 @@ package com.staffing.leave.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.staffing.employee.entity.Employee;
 import com.staffing.enums.LeaveEnum;
 import com.staffing.enums.StatusEnum;
