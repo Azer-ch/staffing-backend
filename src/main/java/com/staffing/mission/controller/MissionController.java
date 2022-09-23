@@ -34,11 +34,29 @@ public class MissionController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PutMapping("/edit/{id}")
+    @PutMapping("/validate/{id}")
     @RolesAllowed({"ROLE_ENTERPRISE"})
     public ResponseEntity<?> validateMission(HttpServletRequest request,@PathVariable Long id){
         try {
             return ResponseEntity.ok(missionService.validateMission(id,request.getUserPrincipal().getName()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PutMapping("/edit/{id}")
+    @RolesAllowed({"ROLE_ENTERPRISE"})
+    public ResponseEntity<?> validateMission(@ModelAttribute @Valid AddMissionRequest mission,@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(missionService.editMission(id,mission));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping("/delete/{id}")
+    @RolesAllowed({"ROLE_ENTERPRISE"})
+    public ResponseEntity<?> deleteMission(HttpServletRequest request,@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(missionService.deleteMission(id,request.getUserPrincipal().getName()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

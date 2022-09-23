@@ -54,13 +54,15 @@ public class MissionService {
             Employee employee = employeeRepository.findByEmail(email);
             if (!employee.getLeaves().isEmpty())
                 for (Leave e : employee.getLeaves()) {
-                    if (addMissionRequest.getStartDate().isBefore(e.getEndDate()) && addMissionRequest.getStartDate().isAfter(e.getStartDate()) || addMissionRequest.getEndDate().isAfter(e.getStartDate()) && addMissionRequest.getEndDate().isBefore(e.getEndDate()) || addMissionRequest.getStartDate().equals(e.getStartDate()) || addMissionRequest.getEndDate().equals(e.getEndDate()) || (addMissionRequest.getStartDate().isBefore(e.getStartDate()) && addMissionRequest.getEndDate().isAfter(e.getEndDate())))
-                        throw new Exception("A leave within the specified date already exists for the employee: " + employee.getFirstName() + ' ' + employee.getLastName());
+                    if (e.getStatus() != StatusEnum.DELETED)
+                        if (addMissionRequest.getStartDate().isBefore(e.getEndDate()) && addMissionRequest.getStartDate().isAfter(e.getStartDate()) || addMissionRequest.getEndDate().isAfter(e.getStartDate()) && addMissionRequest.getEndDate().isBefore(e.getEndDate()) || addMissionRequest.getStartDate().equals(e.getStartDate()) || addMissionRequest.getEndDate().equals(e.getEndDate()) || (addMissionRequest.getStartDate().isBefore(e.getStartDate()) && addMissionRequest.getEndDate().isAfter(e.getEndDate())))
+                            throw new Exception("A leave within the specified date already exists for the employee: " + employee.getFirstName() + ' ' + employee.getLastName());
                 }
             if (!employee.getMissions().isEmpty())
                 for (Mission m : employee.getMissions()) {
-                    if (addMissionRequest.getStartDate().isBefore(m.getEndDate()) && addMissionRequest.getStartDate().isAfter(m.getStartDate()) || addMissionRequest.getEndDate().isAfter(m.getStartDate()) && addMissionRequest.getEndDate().isBefore(m.getEndDate()) || addMissionRequest.getStartDate().equals(m.getStartDate()) || addMissionRequest.getEndDate().equals(m.getEndDate()) || (addMissionRequest.getStartDate().isBefore(m.getStartDate()) && addMissionRequest.getEndDate().isAfter(m.getEndDate())))
-                        throw new Exception("A mission within the specified date already exists for the employee: " + employee.getFirstName() + ' ' + employee.getLastName());
+                    if (m.getStatus() != StatusEnum.DELETED)
+                        if (addMissionRequest.getStartDate().isBefore(m.getEndDate()) && addMissionRequest.getStartDate().isAfter(m.getStartDate()) || addMissionRequest.getEndDate().isAfter(m.getStartDate()) && addMissionRequest.getEndDate().isBefore(m.getEndDate()) || addMissionRequest.getStartDate().equals(m.getStartDate()) || addMissionRequest.getEndDate().equals(m.getEndDate()) || (addMissionRequest.getStartDate().isBefore(m.getStartDate()) && addMissionRequest.getEndDate().isAfter(m.getEndDate())))
+                            throw new Exception("A mission within the specified date already exists for the employee: " + employee.getFirstName() + ' ' + employee.getLastName());
                 }
             mission.addEmployee(employee);
             employee.addMission(mission);
@@ -69,12 +71,13 @@ public class MissionService {
         return missionRepository.save(mission);
     }
 
-    public void editMission(Long id, AddMissionRequest newMission) throws Exception {
+    public Mission editMission(Long id, AddMissionRequest newMission) throws Exception {
         if (!missionRepository.existsById(id))
             throw new NotFoundException("Mission not found");
         if (!enterpriseRepository.existsByEnterpriseName(newMission.getClient()))
             throw new NotFoundException("Enterprise not found");
-        Mission mission = missionRepository.getById(id);
+        Mission mission = missionRepository.findById(id).get();
+        mission.getEmployees().clear();
         for (String email : newMission.getEmployeeList()) {
             if (employeeRepository.existsByEmail(email)) {
                 boolean isEngineer = false;
@@ -91,19 +94,25 @@ public class MissionService {
             mission.addEmployee(employee);
             if (!employee.getLeaves().isEmpty())
                 for (Leave e : employee.getLeaves()) {
-                    if (newMission.getStartDate().isBefore(e.getEndDate()) && newMission.getStartDate().isAfter(e.getStartDate()) || newMission.getEndDate().isAfter(e.getStartDate()) && newMission.getEndDate().isBefore(e.getEndDate()) || newMission.getStartDate().equals(e.getStartDate()) || newMission.getEndDate().equals(e.getEndDate()) || (newMission.getStartDate().isBefore(e.getStartDate()) && newMission.getEndDate().isAfter(e.getEndDate())))
-                        throw new Exception("A leave within the specified date already exists for the employee: " + employee.getFirstName() + ' ' + employee.getLastName());
+                    if (e.getStatus() != StatusEnum.DELETED)
+                        if (newMission.getStartDate().isBefore(e.getEndDate()) && newMission.getStartDate().isAfter(e.getStartDate()) || newMission.getEndDate().isAfter(e.getStartDate()) && newMission.getEndDate().isBefore(e.getEndDate()) || newMission.getStartDate().equals(e.getStartDate()) || newMission.getEndDate().equals(e.getEndDate()) || (newMission.getStartDate().isBefore(e.getStartDate()) && newMission.getEndDate().isAfter(e.getEndDate())))
+                            throw new Exception("A leave within the specified date already exists for the employee: " + employee.getFirstName() + ' ' + employee.getLastName());
                 }
             if (!employee.getMissions().isEmpty())
                 for (Mission m : employee.getMissions()) {
-                    if (newMission.getStartDate().isBefore(m.getEndDate()) && newMission.getStartDate().isAfter(m.getStartDate()) || newMission.getEndDate().isAfter(m.getStartDate()) && newMission.getEndDate().isBefore(m.getEndDate()) || newMission.getStartDate().equals(m.getStartDate()) || newMission.getEndDate().equals(m.getEndDate()) || (newMission.getStartDate().isBefore(m.getStartDate()) && newMission.getEndDate().isAfter(m.getEndDate())))
-                        throw new Exception("A mission within the specified date already exists for the employee: " + employee.getFirstName() + ' ' + employee.getLastName());
+                    if (!Objects.equals(m.getId(), id) && m.getStatus() != StatusEnum.DELETED)
+                        if (newMission.getStartDate().isBefore(m.getEndDate()) && newMission.getStartDate().isAfter(m.getStartDate()) || newMission.getEndDate().isAfter(m.getStartDate()) && newMission.getEndDate().isBefore(m.getEndDate()) || newMission.getStartDate().equals(m.getStartDate()) || newMission.getEndDate().equals(m.getEndDate()) || (newMission.getStartDate().isBefore(m.getStartDate()) && newMission.getEndDate().isAfter(m.getEndDate())))
+                            throw new Exception("A mission within the specified date already exists for the employee: " + employee.getFirstName() + ' ' + employee.getLastName());
                 }
         }
-        mission.setTitle(newMission.getTitle());
-        mission.setStartDate(newMission.getStartDate());
-        mission.setEndDate(newMission.getEndDate());
+        if (!newMission.getTitle().isEmpty())
+            mission.setTitle(newMission.getTitle());
+        if (!newMission.getStartDate().toString().isEmpty())
+            mission.setStartDate(newMission.getStartDate());
+        if (!newMission.getEndDate().toString().isEmpty())
+            mission.setEndDate(newMission.getEndDate());
         mission.setClient(enterpriseRepository.findByEnterpriseName(newMission.getClient()));
+        return mission;
     }
 
     public int countNumberOfMissionDays(String email) throws Exception {
@@ -116,11 +125,16 @@ public class MissionService {
         return count;
     }
 
-    public void deleteMission(Long id) throws Exception {
+    public Mission deleteMission(Long id, String enterprise) throws Exception {
         if (!missionRepository.existsById(id))
             throw new Exception("Mission not found");
         Mission mission = missionRepository.findById(id).get();
+        if (!enterpriseRepository.existsByEmail(enterprise))
+            throw new Exception("Enterprise not found");
+        if (!Objects.equals(enterprise, mission.getClient().getEmail()))
+            throw new Exception("This enterprise is not the owner of the mission");
         mission.setStatus(StatusEnum.DELETED);
+        return mission;
     }
 
     public Mission validateMission(Long id, String enterprise) throws Exception {
@@ -151,7 +165,7 @@ public class MissionService {
             throw new Exception("Enterprise not found");
         List<MissionResponseDto> missions = new ArrayList<>();
         for (Mission m : enterpriseRepository.findByEmail(enterprise).getMissions()) {
-            if (m.getStatus().equals(status)){
+            if (m.getStatus().equals(status)) {
                 MissionResponseDto missionResponseDto = new MissionResponseDto();
                 missionResponseDto.setId(m.getId());
                 missionResponseDto.setClient(enterpriseRepository.findByEmail(enterprise).getEnterpriseName());
@@ -159,7 +173,7 @@ public class MissionService {
                 missionResponseDto.setStatus(status);
                 missionResponseDto.setStartDate(m.getStartDate());
                 missionResponseDto.setEndDate(m.getEndDate());
-                for(Employee e : m.getEmployees()){
+                for (Employee e : m.getEmployees()) {
                     missionResponseDto.addEmployee(e.getEmail());
                 }
                 missions.add(missionResponseDto);
@@ -176,6 +190,7 @@ public class MissionService {
             return mission.getEmployees();
         }
     }
+
     public Enterprise getClientByMission(Long id) throws Exception {
         if (!missionRepository.existsById(id))
             throw new Exception("Mission not found");
